@@ -346,23 +346,38 @@ function renderLevels(){var html='',total=0;
   document.getElementById('lvlist').innerHTML=html;
   document.getElementById('lvtotal').textContent=total+' tasks completed in total';}
 
+async function fillMapREST(tk,path,map){var cursor=null,guard=0;
+  do{var u=TODOIST_API+path+'?limit=200'+(cursor?'&cursor='+encodeURIComponent(cursor):'');
+    var r=await fetch(u,{headers:auth(tk)});if(!r.ok)return;var d=await r.json();
+    var arr=Array.isArray(d)?d:(d.results||[]);arr.forEach(function(p){map[p.id]=p.name;});
+    cursor=(d&&d.next_cursor)?d.next_cursor:null;guard++;}while(cursor&&guard<30);}
 async function pullTodoist(tk){
-  var projMap={},cursor=null,guard=0;
-  do{var u=TODOIST_API+'/projects?limit=200'+(cursor?'&cursor='+encodeURIComponent(cursor):'');
-    var r=await fetch(u,{headers:auth(tk)});if(!r.ok)throw new Error('projects '+r.status);
-    var d=await r.json();var arr=Array.isArray(d)?d:(d.results||[]);
-    arr.forEach(function(p){projMap[p.id]=p.name;});cursor=(d&&d.next_cursor)?d.next_cursor:null;guard++;}while(cursor&&guard<20);
-  var tasks=[];cursor=null;guard=0;
-  do{var u2=TODOIST_API+'/tasks?limit=200'+(cursor?'&cursor='+encodeURIComponent(cursor):'');
-    var r2=await fetch(u2,{headers:auth(tk)});if(!r2.ok)throw new Error('tasks '+r2.status);
-    var d2=await r2.json();var a2=Array.isArray(d2)?d2:(d2.results||[]);
-    tasks=tasks.concat(a2);cursor=(d2&&d2.next_cursor)?d2.next_cursor:null;guard++;}while(cursor&&guard<60);
-  var t=todayStr();
-  todoistTasks=tasks.map(function(x){var due=null,soon=false,recurring=false,recur='';
-    if(x.due){if(x.due.date){due=x.due.date;if(x.due.date.slice(0,10)<=t)soon=true;}
+  var projMap={},secMap={},items=null,t=todayStr();
+  // Try Sync API: complete projects + sections + items in one shot (covers workspaces/folders)
+  try{
+    var body='sync_token=*&resource_types='+encodeURIComponent('["projects","sections","items"]');
+    var r=await fetch(TODOIST_API+'/sync',{method:'POST',headers:{'Authorization':'Bearer '+tk,'Content-Type':'application/x-www-form-urlencoded'},body:body});
+    if(r.ok){var d=await r.json();
+      (d.projects||[]).forEach(function(p){projMap[p.id]=p.name;});
+      (d.sections||[]).forEach(function(s){secMap[s.id]=s.name;});
+      if(d.items)items=d.items.filter(function(x){return !x.checked&&!x.is_deleted;});}
+  }catch(e){}
+  // Fallback: REST tasks (+ projects/sections if maps empty)
+  if(!items){items=[];var cursor=null,guard=0;
+    do{var u2=TODOIST_API+'/tasks?limit=200'+(cursor?'&cursor='+encodeURIComponent(cursor):'');
+      var r2=await fetch(u2,{headers:auth(tk)});if(!r2.ok)throw new Error('tasks '+r2.status);
+      var d2=await r2.json();var a2=Array.isArray(d2)?d2:(d2.results||[]);
+      items=items.concat(a2);cursor=(d2&&d2.next_cursor)?d2.next_cursor:null;guard++;}while(cursor&&guard<60);}
+  if(!Object.keys(projMap).length)await fillMapREST(tk,'/projects',projMap);
+  if(!Object.keys(secMap).length)await fillMapREST(tk,'/sections',secMap);
+  todoistTasks=items.map(function(x){
+    var proj=projMap[x.project_id]||'',sec=secMap[x.section_id]||'';
+    var label=sec?(proj?(proj+' \u203A '+sec):sec):proj;
+    var due=null,soon=false,recurring=false,recur='';
+    if(x.due){if(x.due.date){due=String(x.due.date);if(due.slice(0,10)<=t)soon=true;}
       if(x.due.is_recurring){recurring=true;recur=x.due.string||'recurring';}}
-    if(x.deadline&&x.deadline.date){if(x.deadline.date.slice(0,10)<=t)soon=true;if(!due)due=x.deadline.date;}
-    return {id:x.id,content:x.content,project:projMap[x.project_id]||'',due:due,soon:soon,recurring:recurring,recur:recur};});
+    if(x.deadline&&x.deadline.date){if(String(x.deadline.date).slice(0,10)<=t)soon=true;if(!due)due=String(x.deadline.date);}
+    return {id:String(x.id),content:x.content,project:label,due:due,soon:soon,recurring:recurring,recur:recur};});
   store.set('match:todoist',JSON.stringify(todoistTasks));store.set('match:lastsync',String(Date.now()));
   return todoistTasks.length;}
 async function saveSync(){var tk=document.getElementById('token').value.trim();var st=document.getElementById('syncStatus');
