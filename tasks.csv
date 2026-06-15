@@ -1,21 +1,21 @@
 id,emoji,task,category,repeatable,frequency
 revit,🏛️,Study Revit (15 min),professional,yes,daily
-clean,🧹,Clean the house,life,yes,weekly
+clean,🧹,Clean the house,life,yes,every 4 days
 tennis,🎾,Set up tennis for today,fitness,yes,weekly
 walk,🚶‍♀️,Go for a walk,fitness,yes,daily
-beach,🏖️,Go to the beach,wellbeing,yes,monthly
-whatsapp,💬,Clear WhatsApp messages,life,yes,weekly
+beach,🏖️,Go to the beach,wellbeing,yes,weekly
+whatsapp,💬,Clear WhatsApp messages,life,yes,every 2 days
 mail,📧,Clear your emails,life,yes,every 2 days
-insta,📷,Tidy up Instagram,life,yes,weekly
-preply,🎓,Get Preply up to date,professional,yes,weekly
+insta,📷,Tidy up Instagram,life,yes,every 4 days
+preply,🎓,Get Preply up to date,professional,yes,monthly
 etsy,🛒,Check Etsy,professional,yes,weekly
-phd,📑,PhD application,professional,yes,weekly
+phd,📑,PhD application,professional,yes,daily
 family,☎️,Talk with your family,wellbeing,yes,weekly
-contacts,📇,Go through your contacts,life,yes,monthly
+contacts,📇,Go through your contacts,life,yes,every 2 weeks
 ukulele,🎶,Play ukulele,creative,yes,every 2 days
 boardgame,🎲,Play a board game,life,yes,weekly
 meal,🍽️,Make a meal plan,life,yes,weekly
-selfcare,💅,Do your self-care,wellbeing,yes,weekly
+selfcare,💅,Do your self-care,wellbeing,yes,every 4 days
 exercise,🏋️‍♀️,Exercise,fitness,yes,daily
 meditate,🧘‍♀️,Meditate,wellbeing,yes,daily
 read,📖,Read,knowledge,yes,daily
