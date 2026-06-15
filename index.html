@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
+<title>my match</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="my match">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#F7EEF6">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAEAklEQVR4nO3cS06sNxSFURNlSGllTBlOxpRW5kIP0SOdIKHShXr9D+/ttdpIdWx/OkKAeHl/ffsYUOK3sweALQmaKoKmiqCpImiqCJoqgqaKoKkiaKoImiqCpoqgqSJoqgiaKoKmiqCpImiqCJoqgqaKoKkiaKoImiqCpoqgqSJoqgiaKoKmiqCpImiqCJoqgqaKoKkiaKoImiqCpoqgqSJoqgiaKoKmiqCpImiqCJoqgqaKoKkiaKr8fvYAZ/rnr3+vfs2ff/9xwCT3SZ37CC/vr28fZw9xlFtCuOaMUFLnPsMSQW8RxKUjAkmd+0zVQe8RxKU9AkmdewaVQR8RxKUtAkmdeyZ1P+U4I4otPjd17tlUBX324zz6+alzz6gm6Fke5d45UueeVUXQsz3GrfOkzj2z+KBnfYRrc6XOPbvooGe//O/mS507QWzQKZd+OWfq3Clig4ZfiQw6bXt8zps6d5LIoOE7cb/6Ttwa6ZJ+PW5DUyUqaNv5HEn3HhU0XCNoqgiaKjFBJ30f1yjl/mOChlsImiqCpoqgqSJoqgiaKoKmiqCpEhN00p8wNkq5/5ig4RaCpoqgqRIVdMr3cW2S7j0qaLgmLuikbdEg7b7jgoafRAadtjVSJd5zZNDwndigE7dHktT7jQ16jNxLn13yvUYHPUb25c8o/T7jgx4j/xFm0XCPFUGP0fEYZ2q5v5qgx+h5lKM13VtV0GN0Pc4R2u4r7v9D3yPlv/2coS3kT3Ub+qvWR3tW871UBz1G9+M9ov0+6oMeo/8Rb7XCPSwRNOtYJugVttNPVjn/MkGPsc6jXlrp3EsFPcZajzvGeuddLmi6LRn0KltrlXN+tWTQY/Q/dvv5vrNs0GP0PnrruW6xdND0WT7otm3Wdp57LR/0GD0RtJzjGYL+X3oM6fNvRdBUEfQXqVsude49CPpCWhxp8+5N0FQR9C+kbL2UOY8k6G/MHsvs851F0D+YNZpZ55qBoKki6Ctm24azzTMbQd9glohmmWNmgr7R2TGd/fkpBE0VQd/hrC1pO99O0Hc6Oi4x30fQDzgqMjHfT9BUEfSD9t6etvNjBP2EvaIT8+METRVBP2nrbWo7P0fQG9gqQjE/T9AbeTZGMW9D0FQR9IYe3bK283YEvbF74xTztgS9g1sjFfP2BE0VQe/k2va1nfch6B19F62Y9yPonV3GK+Z9CZoqgj7A51a2nff38v769nH2ELAVG5oqgqaKoKkiaKoImiqCpoqgqSJoqgiaKoKmiqCpImiqCJoqgqaKoKkiaKoImiqCpoqgqSJoqgiaKoKmiqCpImiqCJoqgqaKoKkiaKoImiqCpoqgqSJoqgiaKoKmiqCpImiqCJoqgqbKfwdL6LNYpizzAAAAAElFTkSuQmCC">
+<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAEAklEQVR4nO3cS06sNxSFURNlSGllTBlOxpRW5kIP0SOdIKHShXr9D+/ttdpIdWx/OkKAeHl/ffsYUOK3sweALQmaKoKmiqCpImiqCJoqgqaKoKkiaKoImiqCpoqgqSJoqgiaKoKmiqCpImiqCJoqgqaKoKkiaKoImiqCpoqgqSJoqgiaKoKmiqCpImiqCJoqgqaKoKkiaKoImiqCpoqgqSJoqgiaKoKmiqCpImiqCJoqgqaKoKkiaKr8fvYAZ/rnr3+vfs2ff/9xwCT3SZ37CC/vr28fZw9xlFtCuOaMUFLnPsMSQW8RxKUjAkmd+0zVQe8RxKU9AkmdewaVQR8RxKUtAkmdeyZ1P+U4I4otPjd17tlUBX324zz6+alzz6gm6Fke5d45UueeVUXQsz3GrfOkzj2z+KBnfYRrc6XOPbvooGe//O/mS507QWzQKZd+OWfq3Clig4ZfiQw6bXt8zps6d5LIoOE7cb/6Ttwa6ZJ+PW5DUyUqaNv5HEn3HhU0XCNoqgiaKjFBJ30f1yjl/mOChlsImiqCpoqgqSJoqgiaKoKmiqCpEhN00p8wNkq5/5ig4RaCpoqgqRIVdMr3cW2S7j0qaLgmLuikbdEg7b7jgoafRAadtjVSJd5zZNDwndigE7dHktT7jQ16jNxLn13yvUYHPUb25c8o/T7jgx4j/xFm0XCPFUGP0fEYZ2q5v5qgx+h5lKM13VtV0GN0Pc4R2u4r7v9D3yPlv/2coS3kT3Ub+qvWR3tW871UBz1G9+M9ov0+6oMeo/8Rb7XCPSwRNOtYJugVttNPVjn/MkGPsc6jXlrp3EsFPcZajzvGeuddLmi6LRn0KltrlXN+tWTQY/Q/dvv5vrNs0GP0PnrruW6xdND0WT7otm3Wdp57LR/0GD0RtJzjGYL+X3oM6fNvRdBUEfQXqVsude49CPpCWhxp8+5N0FQR9C+kbL2UOY8k6G/MHsvs851F0D+YNZpZ55qBoKki6Ctm24azzTMbQd9glohmmWNmgr7R2TGd/fkpBE0VQd/hrC1pO99O0Hc6Oi4x30fQDzgqMjHfT9BUEfSD9t6etvNjBP2EvaIT8+METRVBP2nrbWo7P0fQG9gqQjE/T9AbeTZGMW9D0FQR9IYe3bK283YEvbF74xTztgS9g1sjFfP2BE0VQe/k2va1nfch6B19F62Y9yPonV3GK+Z9CZoqgj7A51a2nff38v769nH2ELAVG5oqgqaKoKkiaKoImiqCpoqgqSJoqgiaKoKmiqCpImiqCJoqgqaKoKkiaKoImiqCpoqgqSJoqgiaKoKmiqCpImiqCJoqgqaKoKkiaKoImiqCpoqgqSJoqgiaKoKmiqCpImiqCJoqgqbKfwdL6LNYpizzAAAAAElFTkSuQmCC">
+<style>
+  :root{
+    --accent:#BE5BC2; --ink:#2A2122; --ink-soft:#7A6B6C;
+    --paper:color-mix(in srgb, var(--accent) 7%, #FCFAFA);
+    --card:#ffffff;
+    --tint:color-mix(in srgb, var(--accent) 10%, #ffffff);
+    --tint-strong:color-mix(in srgb, var(--accent) 18%, #ffffff);
+    --line:color-mix(in srgb, var(--accent) 16%, transparent);
+    --line-strong:color-mix(in srgb, var(--accent) 30%, transparent);
+    --muted:#9a8f90;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;}
+  html,body{background:var(--paper);height:100%;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,sans-serif;
+    color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100vh;
+    padding-top:env(safe-area-inset-top);}
+  .wrap{max-width:440px;margin:0 auto;padding:20px 20px calc(28px + env(safe-area-inset-bottom));min-height:100vh;display:flex;flex-direction:column;}
+
+  header{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+  .logo{width:32px;height:32px;border-radius:8px;flex:none;}
+  h1{font-size:18px;font-weight:700;letter-spacing:-.01em;flex:1;}
+  h1 span{color:var(--accent);font-weight:600;font-size:12.5px;}
+  .gear{width:36px;height:36px;border:none;background:var(--card);border:1.5px solid var(--line-strong);
+    border-radius:10px;font-size:16px;cursor:pointer;color:var(--ink-soft);}
+
+  /* DECK */
+  #deckScreen{flex:1;display:flex;flex-direction:column;}
+  .stack{position:relative;flex:1;min-height:380px;margin-bottom:18px;}
+  .peek{position:absolute;inset:18px 14px auto 14px;height:88%;background:var(--card);
+    border:1.5px solid var(--line);border-radius:22px;transform:scale(.96) translateY(10px);opacity:.6;}
+  .card{position:absolute;inset:0;background:var(--card);border:1.5px solid var(--line-strong);
+    border-radius:22px;box-shadow:0 10px 30px color-mix(in srgb, var(--accent) 12%, transparent);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+    padding:30px;cursor:grab;touch-action:none;will-change:transform;}
+  .card:active{cursor:grabbing;}
+  .cemoji{font-size:74px;line-height:1;margin-bottom:20px;}
+  .ctitle{font-size:25px;font-weight:700;letter-spacing:-.02em;line-height:1.18;}
+  .crepeat{margin-top:16px;font-size:12px;font-weight:600;color:var(--ink-soft);
+    background:var(--tint);border-radius:20px;padding:5px 12px;}
+  .stamp{position:absolute;top:26px;font-size:24px;font-weight:800;letter-spacing:.06em;
+    padding:5px 12px;border-radius:10px;border:3px solid;opacity:0;transform:rotate(-12deg);}
+  .stamp.match{right:24px;color:var(--accent);border-color:var(--accent);}
+  .stamp.later{left:24px;color:var(--muted);border-color:var(--muted);transform:rotate(12deg);}
+
+  .deckbtns{display:flex;justify-content:center;gap:26px;margin-bottom:10px;}
+  .circ{width:66px;height:66px;border-radius:50%;border:2px solid;background:var(--card);
+    font-size:26px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .1s;}
+  .circ:active{transform:scale(.9);}
+  .circ.later{color:var(--muted);border-color:var(--line-strong);}
+  .circ.match{color:#fff;background:var(--accent);border-color:var(--accent);box-shadow:0 6px 18px color-mix(in srgb, var(--accent) 35%, transparent);}
+  .hint{text-align:center;font-size:12px;color:var(--ink-soft);}
+
+  /* FOCUS */
+  #focusScreen{flex:1;display:flex;flex-direction:column;}
+  .fcard{flex:1;background:var(--card);border:1.5px solid var(--line-strong);border-radius:22px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;margin-bottom:16px;position:relative;}
+  .matched{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;}
+  .femoji{font-size:70px;margin-bottom:16px;}
+  .ftitle{font-size:26px;font-weight:700;letter-spacing:-.02em;line-height:1.18;margin-bottom:6px;}
+  .frepeat{margin-top:14px;font-size:12px;font-weight:600;color:var(--ink-soft);background:var(--tint);
+    border-radius:20px;padding:6px 13px;cursor:pointer;border:1.5px solid var(--line);}
+  .timer{margin-top:24px;}
+  .tdisp{font-size:40px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.01em;margin-bottom:12px;display:none;}
+  .tdisp.on{display:block;}
+  .chips{display:flex;gap:8px;justify-content:center;}
+  .chip{border:1.5px solid var(--line-strong);background:var(--card);font-family:inherit;font-size:13px;
+    font-weight:600;color:var(--ink-soft);padding:8px 14px;border-radius:20px;cursor:pointer;}
+  .chip.on{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .fbtns{display:flex;flex-direction:column;gap:10px;}
+  .big{border:none;background:var(--accent);color:#fff;font-family:inherit;font-size:16px;font-weight:700;
+    padding:16px;border-radius:14px;cursor:pointer;box-shadow:0 6px 18px color-mix(in srgb, var(--accent) 30%, transparent);}
+  .big:active{transform:scale(.99);}
+  .ghost{border:1.5px solid var(--line-strong);background:none;color:var(--ink-soft);font-family:inherit;
+    font-size:14px;font-weight:600;padding:13px;border-radius:14px;cursor:pointer;}
+
+  /* EMPTY */
+  .empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--ink-soft);gap:14px;}
+  .empty .e1{font-size:54px;}
+  .empty .e2{font-size:17px;font-weight:700;color:var(--ink);}
+  .empty p{font-size:13px;line-height:1.5;max-width:260px;}
+
+  /* SETTINGS */
+  #settingsScreen{flex:1;display:flex;flex-direction:column;}
+  .slabel{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;margin:18px 2px 9px;}
+  .sbox{background:var(--card);border:1.5px solid var(--line-strong);border-radius:14px;padding:15px;}
+  .sbox p{font-size:12.5px;color:var(--ink-soft);line-height:1.5;margin-bottom:11px;}
+  input[type=password],input[type=text]{width:100%;font-family:inherit;font-size:15px;padding:11px 12px;
+    border:1.5px solid var(--line-strong);border-radius:10px;background:var(--paper);color:var(--ink);margin-bottom:10px;}
+  .srow{display:flex;gap:9px;}
+  .srow .big{flex:1;font-size:14px;padding:12px;}
+  .status{font-size:12.5px;margin-top:11px;font-weight:600;}
+  .status.ok{color:var(--accent);} .status.err{color:#b3402f;}
+  .celebrate{position:fixed;inset:0;pointer-events:none;display:flex;align-items:center;justify-content:center;
+    font-size:90px;opacity:0;z-index:9;}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img class="logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAEAklEQVR4nO3cS06sNxSFURNlSGllTBlOxpRW5kIP0SOdIKHShXr9D+/ttdpIdWx/OkKAeHl/ffsYUOK3sweALQmaKoKmiqCpImiqCJoqgqaKoKkiaKoImiqCpoqgqSJoqgiaKoKmiqCpImiqCJoqgqaKoKkiaKoImiqCpoqgqSJoqgiaKoKmiqCpImiqCJoqgqaKoKkiaKoImiqCpoqgqSJoqgiaKoKmiqCpImiqCJoqgqaKoKkiaKr8fvYAZ/rnr3+vfs2ff/9xwCT3SZ37CC/vr28fZw9xlFtCuOaMUFLnPsMSQW8RxKUjAkmd+0zVQe8RxKU9AkmdewaVQR8RxKUtAkmdeyZ1P+U4I4otPjd17tlUBX324zz6+alzz6gm6Fke5d45UueeVUXQsz3GrfOkzj2z+KBnfYRrc6XOPbvooGe//O/mS507QWzQKZd+OWfq3Clig4ZfiQw6bXt8zps6d5LIoOE7cb/6Ttwa6ZJ+PW5DUyUqaNv5HEn3HhU0XCNoqgiaKjFBJ30f1yjl/mOChlsImiqCpoqgqSJoqgiaKoKmiqCpEhN00p8wNkq5/5ig4RaCpoqgqRIVdMr3cW2S7j0qaLgmLuikbdEg7b7jgoafRAadtjVSJd5zZNDwndigE7dHktT7jQ16jNxLn13yvUYHPUb25c8o/T7jgx4j/xFm0XCPFUGP0fEYZ2q5v5qgx+h5lKM13VtV0GN0Pc4R2u4r7v9D3yPlv/2coS3kT3Ub+qvWR3tW871UBz1G9+M9ov0+6oMeo/8Rb7XCPSwRNOtYJugVttNPVjn/MkGPsc6jXlrp3EsFPcZajzvGeuddLmi6LRn0KltrlXN+tWTQY/Q/dvv5vrNs0GP0PnrruW6xdND0WT7otm3Wdp57LR/0GD0RtJzjGYL+X3oM6fNvRdBUEfQXqVsude49CPpCWhxp8+5N0FQR9C+kbL2UOY8k6G/MHsvs851F0D+YNZpZ55qBoKki6Ctm24azzTMbQd9glohmmWNmgr7R2TGd/fkpBE0VQd/hrC1pO99O0Hc6Oi4x30fQDzgqMjHfT9BUEfSD9t6etvNjBP2EvaIT8+METRVBP2nrbWo7P0fQG9gqQjE/T9AbeTZGMW9D0FQR9IYe3bK283YEvbF74xTztgS9g1sjFfP2BE0VQe/k2va1nfch6B19F62Y9yPonV3GK+Z9CZoqgj7A51a2nff38v769nH2ELAVG5oqgqaKoKkiaKoImiqCpoqgqSJoqgiaKoKmiqCpImiqCJoqgqaKoKkiaKoImiqCpoqgqSJoqgiaKoKmiqCpImiqCJoqgqaKoKkiaKoImiqCpoqgqSJoqgiaKoKmiqCpImiqCJoqgqbKfwdL6LNYpizzAAAAAElFTkSuQmCC" alt="">
+    <div style="flex:1"></div>
+    <button class="gear" id="gear" onclick="toggleSettings()">&#9881;</button>
+  </header>
+
+  <div id="deckScreen">
+    <div class="stack">
+      <div class="peek"></div>
+      <div class="card" id="card">
+        <div class="stamp match" id="stampMatch">MATCH</div>
+        <div class="stamp later" id="stampLater">LATER</div>
+        <div class="cemoji" id="cemoji"></div>
+        <div class="ctitle" id="ctitle"></div>
+        <div class="crepeat" id="crepeat"></div>
+      </div>
+    </div>
+    <div class="deckbtns">
+      <button class="circ later" onclick="btnSwipe(-1)">&#10005;</button>
+      <button class="circ match" onclick="btnSwipe(1)">&#9829;</button>
+    </div>
+    <div class="hint">&larr; later &nbsp;&middot;&nbsp; match &rarr;</div>
+  </div>
+
+  <div id="focusScreen" hidden>
+    <div class="fcard">
+      <div class="matched">it&rsquo;s a match</div>
+      <div class="femoji" id="femoji"></div>
+      <div class="ftitle" id="ftitle"></div>
+      <div class="frepeat" id="frepeat" onclick="toggleRepeat()"></div>
+      <div class="timer">
+        <div class="tdisp" id="tdisp">15:00</div>
+        <div class="chips">
+          <button class="chip" data-min="5" onclick="pickTimer(5)">5 min</button>
+          <button class="chip" data-min="15" onclick="pickTimer(15)">15 min</button>
+          <button class="chip" data-min="25" onclick="pickTimer(25)">25 min</button>
+          <button class="chip" id="tstop" onclick="stopTimer()" style="display:none">stop</button>
+        </div>
+      </div>
+    </div>
+    <div class="fbtns">
+      <button class="big" onclick="completeTask()">I did it &#10003;</button>
+      <button class="ghost" onclick="backToDeck()">not now &mdash; back to cards</button>
+    </div>
+  </div>
+
+  <div id="emptyScreen" hidden>
+    <div class="empty">
+      <div class="e1">&#127881;</div>
+      <div class="e2">No cards right now</div>
+      <p>You&rsquo;ve gone through everything. Take a breath, or reshuffle for another pass.</p>
+      <button class="big" onclick="reshuffle()">Reshuffle</button>
+    </div>
+  </div>
+
+  <div id="settingsScreen" hidden>
+    <div class="slabel">Todoist sync</div>
+    <div class="sbox">
+      <p>Paste your Todoist API token to pull your tasks into the deck. Get it in Todoist: Settings &rarr; Integrations &rarr; Developer. It&rsquo;s stored only on this device.</p>
+      <input type="password" id="token" placeholder="Todoist API token" autocomplete="off">
+      <div class="srow">
+        <button class="big" onclick="saveSync()">Save &amp; sync</button>
+        <button class="ghost" style="flex:none;padding:12px 16px" onclick="clearToken()">Remove</button>
+      </div>
+      <div class="status" id="syncStatus"></div>
+    </div>
+    <div class="slabel">Deck</div>
+    <div class="sbox">
+      <p id="deckInfo"></p>
+      <button class="ghost" style="width:100%" onclick="resetOneTimes()">Bring back completed one-time tasks</button>
+    </div>
+    <div style="flex:1"></div>
+    <button class="ghost" style="width:100%;margin-top:16px" onclick="toggleSettings()">Back to cards</button>
+  </div>
+</div>
+<div class="celebrate" id="celebrate">&#10003;</div>
+
+<script>
+var DEFAULTS=[
+  {id:"revit",e:"\uD83C\uDFDB\uFE0F",t:"Study Revit (15 min)"},
+  {id:"clean",e:"\uD83E\uDDF9",t:"Clean the house"},
+  {id:"tennis",e:"\uD83C\uDFBE",t:"Set up tennis for today"},
+  {id:"walk",e:"\uD83D\uDEB6\u200D\u2640\uFE0F",t:"Go for a walk"},
+  {id:"beach",e:"\uD83C\uDFD6\uFE0F",t:"Go to the beach"},
+  {id:"whatsapp",e:"\uD83D\uDCAC",t:"Clear WhatsApp messages"},
+  {id:"mail",e:"\uD83D\uDCE7",t:"Clear your emails"},
+  {id:"insta",e:"\uD83D\uDCF7",t:"Tidy up Instagram"},
+  {id:"preply",e:"\uD83C\uDF93",t:"Get Preply up to date"},
+  {id:"etsy",e:"\uD83D\uDED2",t:"Check Etsy"},
+  {id:"phd",e:"\uD83D\uDCD1",t:"PhD application"},
+  {id:"family",e:"\u260E\uFE0F",t:"Talk with your family"},
+  {id:"contacts",e:"\uD83D\uDCC7",t:"Go through your contacts"},
+  {id:"ukulele",e:"\uD83C\uDFB6",t:"Play ukulele"},
+  {id:"boardgame",e:"\uD83C\uDFB2",t:"Play a board game"},
+  {id:"meal",e:"\uD83C\uDF7D\uFE0F",t:"Make a meal plan"},
+  {id:"selfcare",e:"\uD83D\uDC85",t:"Do your self-care"},
+  {id:"exercise",e:"\uD83C\uDFCB\uFE0F\u200D\u2640\uFE0F",t:"Exercise"},
+  {id:"meditate",e:"\uD83E\uDDD8\u200D\u2640\uFE0F",t:"Meditate"},
+  {id:"read",e:"\uD83D\uDCD6",t:"Read"},
+  {id:"write",e:"\u270D\uFE0F",t:"Write"},
+  {id:"sketch",e:"\uD83C\uDFA8",t:"Sketch"},
+  {id:"song",e:"\uD83C\uDFA4",t:"Learn & sing a song"},
+  {id:"italian",e:"\uD83C\uDDEE\uD83C\uDDF9",t:"Study Italian"},
+  {id:"english",e:"\uD83D\uDDE3\uFE0F",t:"English fluency boost"}
+];
+var TODOIST_API='https://api.todoist.com/api/v1';
+var mem={};
+var store={get:function(k){try{return localStorage.getItem(k);}catch(e){return (k in mem)?mem[k]:null;}},
+  set:function(k,v){try{localStorage.setItem(k,v);}catch(e){mem[k]=v;}},
+  del:function(k){try{localStorage.removeItem(k);}catch(e){delete mem[k];}}};
+
+var overrides={}, todoistTasks=[], queue=[], active=null, timer=null, timerLeft=0;
+function loadOverrides(){var r=store.get('match:overrides');overrides=r?JSON.parse(r):{oneTime:{},done:{}};
+  if(!overrides.oneTime)overrides.oneTime={}; if(!overrides.done)overrides.done={};}
+function saveOverrides(){store.set('match:overrides',JSON.stringify(overrides));}
+
+function pool(){
+  var local=DEFAULTS.filter(function(d){return !overrides.done[d.id];}).map(function(d){
+    return {id:d.id,e:d.e,t:d.t,repeatable:overrides.oneTime[d.id]?false:true,source:'local'};
+  });
+  var td=todoistTasks.map(function(x){return {id:'td-'+x.id,e:"\u2705",t:x.content,repeatable:false,source:'todoist',tdid:x.id};});
+  return local.concat(td);
+}
+function byId(id){var p=pool();for(var i=0;i<p.length;i++)if(p[i].id===id)return p[i];return null;}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function buildQueue(){queue=shuffle(pool().map(function(x){return x.id;}));}
+
+function show(id){['deckScreen','focusScreen','emptyScreen','settingsScreen'].forEach(function(s){
+  document.getElementById(s).hidden=(s!==id);});}
+
+/* ---- DECK ---- */
+function renderCard(){
+  if(active){renderFocus();show('focusScreen');return;}
+  // drop ids no longer in pool
+  var ids={}; pool().forEach(function(x){ids[x.id]=1;});
+  queue=queue.filter(function(id){return ids[id];});
+  if(!queue.length){show('emptyScreen');return;}
+  var task=byId(queue[0]);
+  if(!task){queue.shift();return renderCard();}
+  document.getElementById('cemoji').textContent=task.e;
+  document.getElementById('ctitle').textContent=task.t;
+  var cr=document.getElementById('crepeat');
+  cr.textContent = task.source==='todoist' ? 'from Todoist' : (task.repeatable?'\u21BB keeps coming back':'one-time');
+  var c=document.getElementById('card');
+  c.style.transition='none'; c.style.transform=''; 
+  document.getElementById('stampMatch').style.opacity=0;
+  document.getElementById('stampLater').style.opacity=0;
+  show('deckScreen');
+}
+function doSwipe(dir){ // 1 right=match, -1 left=later
+  var id=queue[0];
+  if(dir>0){ active=id; store.set('match:active',id); renderCard(); }
+  else { queue.shift(); queue.push(id); renderCard(); }
+}
+function animateOut(dir,cb){
+  var c=document.getElementById('card');
+  c.style.transition='transform .32s ease';
+  c.style.transform='translateX('+(dir*620)+'px) rotate('+(dir*22)+'deg)';
+  setTimeout(cb,300);
+}
+function btnSwipe(dir){ if(!queue.length||active)return; animateOut(dir,function(){doSwipe(dir);}); }
+
+/* drag */
+(function(){
+  var c=document.getElementById('card'), startX=0, dx=0, dragging=false;
+  c.addEventListener('pointerdown',function(e){if(active)return;dragging=true;startX=e.clientX;dx=0;c.style.transition='none';try{c.setPointerCapture(e.pointerId);}catch(_){}}); 
+  c.addEventListener('pointermove',function(e){if(!dragging)return;dx=e.clientX-startX;
+    c.style.transform='translateX('+dx+'px) rotate('+(dx/22)+'deg)';
+    document.getElementById('stampMatch').style.opacity=Math.max(0,Math.min(1,dx/90));
+    document.getElementById('stampLater').style.opacity=Math.max(0,Math.min(1,-dx/90));});
+  function end(){if(!dragging)return;dragging=false;
+    if(dx>95){animateOut(1,function(){doSwipe(1);});}
+    else if(dx<-95){animateOut(-1,function(){doSwipe(-1);});}
+    else{c.style.transition='transform .25s ease';c.style.transform='';
+      document.getElementById('stampMatch').style.opacity=0;document.getElementById('stampLater').style.opacity=0;}}
+  c.addEventListener('pointerup',end); c.addEventListener('pointercancel',end);
+})();
+
+/* ---- FOCUS ---- */
+function renderFocus(){
+  var task=byId(active);
+  if(!task){active=null;store.del('match:active');return renderCard();}
+  document.getElementById('femoji').textContent=task.e;
+  document.getElementById('ftitle').textContent=task.t;
+  var fr=document.getElementById('frepeat');
+  if(task.source==='todoist'){fr.textContent='from Todoist'; fr.style.cursor='default';}
+  else{fr.textContent= task.repeatable?'\u21BB repeats \u2014 tap to make one-time':'one-time \u2014 tap to make it repeat'; fr.style.cursor='pointer';}
+  stopTimer();
+  document.getElementById('tdisp').classList.remove('on');
+  document.querySelectorAll('.chip').forEach(function(ch){ch.classList.remove('on');});
+}
+function toggleRepeat(){
+  var task=byId(active); if(!task||task.source==='todoist')return;
+  if(task.repeatable) overrides.oneTime[active]=true; else delete overrides.oneTime[active];
+  saveOverrides(); renderFocus();
+}
+function pickTimer(min){
+  document.querySelectorAll('.chip[data-min]').forEach(function(ch){ch.classList.toggle('on',+ch.dataset.min===min);});
+  timerLeft=min*60; updateTimer(); document.getElementById('tdisp').classList.add('on');
+  document.getElementById('tstop').style.display='inline-block';
+  if(timer)clearInterval(timer);
+  timer=setInterval(function(){timerLeft--; if(timerLeft<=0){clearInterval(timer);timer=null;
+    document.getElementById('tdisp').textContent="time\u2019s up \uD83C\uDF89";}else updateTimer();},1000);
+}
+function updateTimer(){var m=Math.floor(timerLeft/60),s=timerLeft%60;
+  document.getElementById('tdisp').textContent=m+':'+String(s).padStart(2,'0');}
+function stopTimer(){if(timer){clearInterval(timer);timer=null;}
+  var d=document.getElementById('tdisp'); if(d){d.classList.remove('on');}
+  var st=document.getElementById('tstop'); if(st)st.style.display='none';
+  document.querySelectorAll('.chip[data-min]').forEach(function(ch){ch.classList.remove('on');});}
+
+function celebrate(){var el=document.getElementById('celebrate');
+  el.style.transition='none';el.style.opacity='1';el.style.transform='scale(.4)';
+  requestAnimationFrame(function(){el.style.transition='all .5s ease';el.style.opacity='0';el.style.transform='scale(1.6)';});}
+
+async function completeTask(){
+  var task=byId(active); if(!task){active=null;return renderCard();}
+  if(task.source==='todoist'){
+    try{ await fetch(TODOIST_API+'/tasks/'+task.tdid+'/close',{method:'POST',headers:{'Authorization':'Bearer '+store.get('match:token')}});
+      todoistTasks=todoistTasks.filter(function(x){return x.id!==task.tdid;});
+    }catch(e){/* offline: still remove locally */ todoistTasks=todoistTasks.filter(function(x){return x.id!==task.tdid;});}
+  } else if(!task.repeatable){
+    overrides.done[task.id]=true; saveOverrides();
+  }
+  // repeatable local task stays in the pool and goes back into the deck
+  queue=queue.filter(function(id){return id!==active;});
+  if(task.source==='local' && task.repeatable){ queue.push(task.id); }
+  active=null; store.del('match:active'); stopTimer(); celebrate(); renderCard();
+}
+function backToDeck(){ var id=active; active=null; store.del('match:active'); stopTimer();
+  queue=queue.filter(function(q){return q!==id;}); queue.unshift(id); renderCard(); }
+
+/* ---- SETTINGS ---- */
+function toggleSettings(){
+  if(document.getElementById('settingsScreen').hidden){
+    document.getElementById('token').value=store.get('match:token')||'';
+    var p=pool(); document.getElementById('deckInfo').textContent=p.length+' tasks in your deck'+(todoistTasks.length?' ('+todoistTasks.length+' from Todoist)':'')+'.';
+    document.getElementById('syncStatus').textContent='';
+    show('settingsScreen');
+  } else { renderCard(); }
+}
+async function saveSync(){
+  var tk=document.getElementById('token').value.trim();
+  var st=document.getElementById('syncStatus');
+  if(!tk){st.className='status err';st.textContent='Paste a token first.';return;}
+  store.set('match:token',tk); st.className='status'; st.textContent='Syncing\u2026';
+  try{
+    var r=await fetch(TODOIST_API+'/tasks',{headers:{'Authorization':'Bearer '+tk}});
+    if(!r.ok)throw new Error(r.status);
+    var data=await r.json();
+    var arr=Array.isArray(data)?data:(data.results||[]);
+    todoistTasks=arr.map(function(x){return {id:x.id,content:x.content};});
+    store.set('match:todoist',JSON.stringify(todoistTasks));
+    st.className='status ok'; st.textContent='Synced \u2014 '+todoistTasks.length+' tasks pulled in.';
+    buildQueue();
+  }catch(e){ st.className='status err';
+    st.textContent='Couldn\u2019t reach Todoist. Sync only works in the installed app on your phone, not the chat preview. If it\u2019s installed, re-check the token for stray spaces.'; }
+}
+function clearToken(){store.del('match:token');store.del('match:todoist');todoistTasks=[];
+  document.getElementById('token').value='';var st=document.getElementById('syncStatus');st.className='status';st.textContent='Token removed.';buildQueue();}
+function resetOneTimes(){overrides.done={};saveOverrides();buildQueue();
+  var st=document.getElementById('syncStatus');document.getElementById('deckInfo').textContent=pool().length+' tasks in your deck.';}
+function reshuffle(){buildQueue();renderCard();}
+
+async function silentSync(){
+  var tk=store.get('match:token'); if(!tk)return;
+  try{var r=await fetch(TODOIST_API+'/tasks',{headers:{'Authorization':'Bearer '+tk}});
+    if(!r.ok)return; var data=await r.json();
+    var arr=Array.isArray(data)?data:(data.results||[]);
+    todoistTasks=arr.map(function(x){return {id:x.id,content:x.content};});
+    store.set('match:todoist',JSON.stringify(todoistTasks)); buildQueue(); if(!active)renderCard();
+  }catch(e){}
+}
+(function init(){
+  loadOverrides();
+  var td=store.get('match:todoist'); if(td){try{todoistTasks=JSON.parse(td);}catch(e){}}
+  var a=store.get('match:active'); if(a)active=a;
+  buildQueue();
+  renderCard();
+  silentSync();
+})();
+</script>
+</body>
+</html>
