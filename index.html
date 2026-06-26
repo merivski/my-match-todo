@@ -103,6 +103,7 @@
   <header>
     <img class="logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAEAklEQVR4nO3cS06sNxSFURNlSGllTBlOxpRW5kIP0SOdIKHShXr9D+/ttdpIdWx/OkKAeHl/ffsYUOK3sweALQmaKoKmiqCpImiqCJoqgqaKoKkiaKoImiqCpoqgqSJoqgiaKoKmiqCpImiqCJoqgqaKoKkiaKoImiqCpoqgqSJoqgiaKoKmiqCpImiqCJoqgqaKoKkiaKoImiqCpoqgqSJoqgiaKoKmiqCpImiqCJoqgqaKoKkiaKr8fvYAZ/rnr3+vfs2ff/9xwCT3SZ37CC/vr28fZw9xlFtCuOaMUFLnPsMSQW8RxKUjAkmd+0zVQe8RxKU9AkmdewaVQR8RxKUtAkmdeyZ1P+U4I4otPjd17tlUBX324zz6+alzz6gm6Fke5d45UueeVUXQsz3GrfOkzj2z+KBnfYRrc6XOPbvooGe//O/mS507QWzQKZd+OWfq3Clig4ZfiQw6bXt8zps6d5LIoOE7cb/6Ttwa6ZJ+PW5DUyUqaNv5HEn3HhU0XCNoqgiaKjFBJ30f1yjl/mOChlsImiqCpoqgqSJoqgiaKoKmiqCpEhN00p8wNkq5/5ig4RaCpoqgqRIVdMr3cW2S7j0qaLgmLuikbdEg7b7jgoafRAadtjVSJd5zZNDwndigE7dHktT7jQ16jNxLn13yvUYHPUb25c8o/T7jgx4j/xFm0XCPFUGP0fEYZ2q5v5qgx+h5lKM13VtV0GN0Pc4R2u4r7v9D3yPlv/2coS3kT3Ub+qvWR3tW871UBz1G9+M9ov0+6oMeo/8Rb7XCPSwRNOtYJugVttNPVjn/MkGPsc6jXlrp3EsFPcZajzvGeuddLmi6LRn0KltrlXN+tWTQY/Q/dvv5vrNs0GP0PnrruW6xdND0WT7otm3Wdp57LR/0GD0RtJzjGYL+X3oM6fNvRdBUEfQXqVsude49CPpCWhxp8+5N0FQR9C+kbL2UOY8k6G/MHsvs851F0D+YNZpZ55qBoKki6Ctm24azzTMbQd9glohmmWNmgr7R2TGd/fkpBE0VQd/hrC1pO99O0Hc6Oi4x30fQDzgqMjHfT9BUEfSD9t6etvNjBP2EvaIT8+METRVBP2nrbWo7P0fQG9gqQjE/T9AbeTZGMW9D0FQR9IYe3bK283YEvbF74xTztgS9g1sjFfP2BE0VQe/k2va1nfch6B19F62Y9yPonV3GK+Z9CZoqgj7A51a2nff38v769nH2ELAVG5oqgqaKoKkiaKoImiqCpoqgqSJoqgiaKoKmiqCpImiqCJoqgqaKoKkiaKoImiqCpoqgqSJoqgiaKoKmiqCpImiqCJoqgqaKoKkiaKoImiqCpoqgqSJoqgiaKoKmiqCpImiqCJoqgqbKfwdL6LNYpizzAAAAAElFTkSuQmCC" alt="">
     <div style="flex:1"></div>
+    <a class="iconbtn" href="branches.html" title="Open Branches to edit your tree" style="display:flex;align-items:center;justify-content:center;text-decoration:none">&#127807;</a>
     <button class="iconbtn" onclick="openLevels()">&#9650;</button>
     <button class="iconbtn" onclick="toggleSettings()">&#9881;</button>
   </header>
@@ -173,6 +174,13 @@
         <p>The weekly &amp; monthly pop-ups open this link. Paste your Claude chat URL here so it jumps straight to your goals conversation.</p>
         <input type="url" id="claudeurl" placeholder="https://claude.ai/chat/..." autocomplete="off">
         <button class="big" style="width:100%" onclick="saveClaudeUrl()">Save link</button>
+      </div>
+      <div class="slabel">Life branches</div>
+      <div class="sbox">
+        <p>Your branch flowers (the tips of your tree) flow in between tasks. On the same site, this reads your Branches automatically. If you don't see them, import your <b>branches-backup.json</b> here.</p>
+        <input type="file" id="branchFile" accept="application/json,.json" hidden>
+        <button class="big" style="width:100%" onclick="document.getElementById('branchFile').click()">Import branches file</button>
+        <div class="status" id="branchStatus"></div>
       </div>
       <div class="slabel">Deck</div>
       <div class="sbox"><p id="deckInfo"></p>
@@ -281,19 +289,27 @@ function leafBranches(){
   return out;
 }
 function bById(id){var l=leafBranches();for(var i=0;i<l.length;i++)if(l[i].id===id)return l[i];return null;}
-/* If Branches has never been opened on this origin yet, seed the same default tree
-   so the B deck is never empty. branches.html will load this exact tree later. */
-function ensureBranches(){
-  try{ if(localStorage.getItem(BRANCH_KEY)!=null) return; }catch(e){ return; }
-  function nid(){return 'n'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
-  var t={id:nid(),name:'Meri',collapsed:false,todos:[],children:[
-    {id:nid(),name:'Physical',collapsed:false,todos:[],children:[]},
-    {id:nid(),name:'Mental',collapsed:false,todos:[],children:[]},
-    {id:nid(),name:'Professional',collapsed:false,todos:[],children:[
-      {id:nid(),name:'Freelance',collapsed:false,todos:[],children:[]},
-      {id:nid(),name:'Academic',collapsed:false,todos:[],children:[]}]},
-    {id:nid(),name:'Cultural',collapsed:false,todos:[],children:[]}]};
-  try{localStorage.setItem(BRANCH_KEY,JSON.stringify(t));}catch(e){}}
+/* Import a branches-backup.json straight into the shared key, so the flowers show up
+   even when this app and Branches don't share storage (e.g. the chat preview). */
+function bNormalize(node){
+  if(!node.id)node.id='n'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+  if(!Array.isArray(node.todos))node.todos=[];
+  if(typeof node.collapsed!=='boolean')node.collapsed=false;
+  if(!Array.isArray(node.children))node.children=[];
+  node.children.forEach(bNormalize);return node;}
+function importBranchesFile(file){
+  var st=document.getElementById('branchStatus');
+  var reader=new FileReader();
+  reader.onload=function(){
+    var parsed;
+    try{parsed=JSON.parse(reader.result);}catch(e){st.className='status err';st.textContent='Couldn\u2019t read that file.';return;}
+    if(!parsed||typeof parsed!=='object'||typeof parsed.name!=='string'||!Array.isArray(parsed.children)){
+      st.className='status err';st.textContent='That isn\u2019t a Branches backup.';return;}
+    try{localStorage.setItem(BRANCH_KEY,JSON.stringify(bNormalize(parsed)));}catch(e){}
+    var n=leafBranches().length;
+    st.className='status ok';st.textContent='Loaded \u2014 '+n+' flower'+(n===1?'':'s')+'. Tap \u201CBack to cards\u201D to see them.';
+    buildDecks();current=null;document.getElementById('deckInfo').textContent=deckInfoText();}
+  reader.readAsText(file);}
 function isB(id){return typeof id==='string'&&id.indexOf('b-')===0;}
 /* unified card object for either an A task or a B branch */
 function cardData(id){
@@ -537,15 +553,20 @@ function reminderCTA(){var u=store.get('match:claudeurl')||'https://claude.ai';t
   setRem(curRem,REMINDERS[curRem].next());hideModal();setTimeout(checkReminders,400);}
 function reminderSnooze(){setRem(curRem,Date.now()+24*60*60*1000);hideModal();setTimeout(checkReminders,400);}
 
-(function init(){loadState();ensureBranches();
+(function init(){loadState();
+  var bf=document.getElementById('branchFile');
+  if(bf)bf.addEventListener('change',function(e){var f=e.target.files&&e.target.files[0];if(f)importBranchesFile(f);e.target.value='';});
   var td=store.get('match:todoist');if(td){try{todoistTasks=JSON.parse(td);}catch(e){}}
   var a=store.get('match:active');if(a)active=a;
   buildDecks();if(active!==null)nextSrc=isB(active)?'A':'B';if(active===null)drawNext();renderCard();
   initReminders();checkReminders();
   loadTasksCSV().then(function(changed){if(changed){buildDecks();if(active===null){current=null;drawNext();}if(!active&&document.getElementById('deckScreen').hidden===false)renderCard();}});
   maybeSync();setInterval(maybeSync,30*60*1000);
-  /* if Branches was edited in another tab/page, pick up fresh leaves on return */
-  document.addEventListener('visibilitychange',function(){if(!document.hidden){deckB=shuffledB();}});
+  /* whenever we come back to this page (tab refocus, or back from Branches), re-read the latest flowers */
+  function refreshFlowers(){ deckB=shuffledB(); if(!active&&document.getElementById('deckScreen')&&document.getElementById('deckScreen').hidden===false){ if(current===null||isB(current)){current=null;drawNext();renderCard();} } }
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)refreshFlowers();});
+  window.addEventListener('focus',refreshFlowers);
+  window.addEventListener('pageshow',function(e){ if(e.persisted)refreshFlowers(); });
 })();
 </script>
 </body>
