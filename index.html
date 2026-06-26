@@ -266,16 +266,16 @@ function byId(id){var p=pool();for(var i=0;i<p.length;i++)if(p[i].id===id)return
 /* ---- Branches (B source): read the tree this app shares with branches.html ---- */
 var BRANCH_KEY='branches.tree.v1';
 function readBranches(){try{var r=localStorage.getItem(BRANCH_KEY);return r?JSON.parse(r):null;}catch(e){return null;}}
-/* A "flower" = a leaf branch (no children) that sits at least 2 levels under the root,
-   so the root and the top-level categories are treated as organisation only and never surface.
-   here = [root, ...categories, leaf]; length 1=root, 2=top category, 3+=flower. */
+/* A "flower" = any branch with no children (a leaf), at ANY depth except the root.
+   Branches that have children are organisation only. here = [root, ...path, leaf];
+   length 1 = root (never a flower); length >= 2 = a flower if it has no children. */
 function leafBranches(){
   var root=readBranches(),out=[];
   if(!root)return out;
   (function walk(node,trail){
     var here=trail.concat(node.name||'');
     var kids=node.children||[];
-    if(kids.length===0){ if(here.length>2)out.push({id:'b-'+node.id,bid:node.id,name:node.name,path:here,todos:node.todos||[]}); }
+    if(kids.length===0){ if(here.length>1)out.push({id:'b-'+node.id,bid:node.id,name:node.name,path:here,todos:node.todos||[]}); }
     else for(var i=0;i<kids.length;i++)walk(kids[i],here);
   })(root,[]);
   return out;
