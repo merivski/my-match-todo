@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0046)file:///C:/Users/merye/Downloads/branches.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Branches</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<link href="./branches_files/css2" rel="stylesheet">
 <style>
   :root{
     --bg:#F4F7F4;
@@ -47,6 +47,10 @@
   .brand .mark::before{top:-9px;left:11px}
   .brand .mark::after{top:13px;left:11px}
   .spacer{flex:1}
+  .saved{font-size:12px;font-weight:600;color:var(--accent-deep);background:var(--accent-tint);
+    border-radius:20px;opacity:0;max-width:0;padding:3px 0;overflow:hidden;white-space:nowrap;
+    transition:opacity .25s,max-width .25s,padding .25s}
+  .saved.show{opacity:1;max-width:230px;padding:3px 10px;margin-left:2px}
   .btn{
     font-family:'Inter',sans-serif;font-size:13.5px;font-weight:500;
     display:inline-flex;align-items:center;gap:6px;
@@ -225,28 +229,38 @@
 
   <header class="topbar">
     <div class="brand"><span class="mark"></span><span class="full">Branches</span></div>
+    <span class="saved" id="saved">Saved</span>
     <div class="spacer"></div>
+    <button class="btn" id="exportBtn" title="Download a backup of your whole tree">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"></path></svg>
+      <span class="lbl">Export</span>
+    </button>
+    <button class="btn" id="importBtn" title="Restore a tree from a backup file">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3M7 8l5-5 5 5M5 21h14"></path></svg>
+      <span class="lbl">Import</span>
+    </button>
+    <input type="file" id="importFile" accept="application/json,.json" hidden="">
     <button class="btn primary" id="addArea" title="Add a top-level life area">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
       <span class="lbl">Area</span>
     </button>
     <div class="zoomgroup">
       <button class="btn icon" id="zoomOut" title="Zoom out" aria-label="Zoom out">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14"></path></svg>
       </button>
       <button class="btn icon" id="zoomIn" title="Zoom in" aria-label="Zoom in">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
       </button>
       <button class="btn icon" id="fit" title="Fit to screen" aria-label="Fit to screen">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V5a1 1 0 0 1 1-1h4M20 9V5a1 1 0 0 0-1-1h-4M4 15v4a1 1 0 0 0 1 1h4M20 15v4a1 1 0 0 1-1 1h-4"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V5a1 1 0 0 1 1-1h4M20 9V5a1 1 0 0 0-1-1h-4M4 15v4a1 1 0 0 0 1 1h4M20 15v4a1 1 0 0 1-1 1h-4"></path></svg>
       </button>
     </div>
   </header>
 
   <div class="stage" id="stage">
-    <div class="world" id="world">
-      <svg class="links" id="links"></svg>
-      <div id="nodes"></div>
+    <div class="world" id="world" style="transform: translate(561.2px, -136.25px) scale(0.25);">
+      <svg class="links" id="links" width="1488" height="3698"><path class="link" d="M 132 1689 C 190 1689, 190 89, 248 89"></path><path class="link" d="M 380 89 C 438 89, 438 25, 496 25"></path><path class="link" d="M 380 89 C 438 89, 438 89, 496 89"></path><path class="link" d="M 380 89 C 438 89, 438 153, 496 153"></path><path class="link" d="M 132 1689 C 190 1689, 190 249, 248 249"></path><path class="link" d="M 380 249 C 438 249, 438 217, 496 217"></path><path class="link" d="M 380 249 C 438 249, 438 281, 496 281"></path><path class="link" d="M 132 1689 C 190 1689, 190 1073, 248 1073"></path><path class="link" d="M 380 1073 C 438 1073, 438 441, 496 441"></path><path class="link" d="M 628 441 C 686 441, 686 345, 744 345"></path><path class="link" d="M 628 441 C 686 441, 686 409, 744 409"></path><path class="link" d="M 628 441 C 686 441, 686 473, 744 473"></path><path class="link" d="M 628 441 C 686 441, 686 537, 744 537"></path><path class="link" d="M 380 1073 C 438 1073, 438 633, 496 633"></path><path class="link" d="M 628 633 C 686 633, 686 601, 744 601"></path><path class="link" d="M 628 633 C 686 633, 686 665, 744 665"></path><path class="link" d="M 380 1073 C 438 1073, 438 921, 496 921"></path><path class="link" d="M 628 921 C 686 921, 686 729, 744 729"></path><path class="link" d="M 628 921 C 686 921, 686 793, 744 793"></path><path class="link" d="M 628 921 C 686 921, 686 857, 744 857"></path><path class="link" d="M 628 921 C 686 921, 686 921, 744 921"></path><path class="link" d="M 628 921 C 686 921, 686 985, 744 985"></path><path class="link" d="M 628 921 C 686 921, 686 1049, 744 1049"></path><path class="link" d="M 628 921 C 686 921, 686 1113, 744 1113"></path><path class="link" d="M 380 1073 C 438 1073, 438 1177, 496 1177"></path><path class="link" d="M 628 1177 C 686 1177, 686 1177, 744 1177"></path><path class="link" d="M 380 1073 C 438 1073, 438 1401, 496 1401"></path><path class="link" d="M 628 1401 C 686 1401, 686 1241, 744 1241"></path><path class="link" d="M 876 1241 C 934 1241, 934 1241, 992 1241"></path><path class="link" d="M 628 1401 C 686 1401, 686 1305, 744 1305"></path><path class="link" d="M 628 1401 C 686 1401, 686 1369, 744 1369"></path><path class="link" d="M 628 1401 C 686 1401, 686 1433, 744 1433"></path><path class="link" d="M 628 1401 C 686 1401, 686 1497, 744 1497"></path><path class="link" d="M 628 1401 C 686 1401, 686 1561, 744 1561"></path><path class="link" d="M 380 1073 C 438 1073, 438 1705, 496 1705"></path><path class="link" d="M 628 1705 C 686 1705, 686 1625, 744 1625"></path><path class="link" d="M 628 1705 C 686 1705, 686 1689, 744 1689"></path><path class="link" d="M 876 1689 C 934 1689, 934 1689, 992 1689"></path><path class="link" d="M 628 1705 C 686 1705, 686 1785, 744 1785"></path><path class="link" d="M 876 1785 C 934 1785, 934 1753, 992 1753"></path><path class="link" d="M 876 1785 C 934 1785, 934 1817, 992 1817"></path><path class="link" d="M 132 1689 C 190 1689, 190 2425, 248 2425"></path><path class="link" d="M 380 2425 C 438 2425, 438 2201, 496 2201"></path><path class="link" d="M 628 2201 C 686 2201, 686 1881, 744 1881"></path><path class="link" d="M 876 1881 C 934 1881, 934 1881, 992 1881"></path><path class="link" d="M 628 2201 C 686 2201, 686 2137, 744 2137"></path><path class="link" d="M 876 2137 C 934 2137, 934 1945, 992 1945"></path><path class="link" d="M 876 2137 C 934 2137, 934 2009, 992 2009"></path><path class="link" d="M 876 2137 C 934 2137, 934 2073, 992 2073"></path><path class="link" d="M 876 2137 C 934 2137, 934 2137, 992 2137"></path><path class="link" d="M 876 2137 C 934 2137, 934 2201, 992 2201"></path><path class="link" d="M 876 2137 C 934 2137, 934 2265, 992 2265"></path><path class="link" d="M 876 2137 C 934 2137, 934 2329, 992 2329"></path><path class="link" d="M 628 2201 C 686 2201, 686 2393, 744 2393"></path><path class="link" d="M 876 2393 C 934 2393, 934 2393, 992 2393"></path><path class="link" d="M 1124 2393 C 1182 2393, 1182 2393, 1240 2393"></path><path class="link" d="M 628 2201 C 686 2201, 686 2457, 744 2457"></path><path class="link" d="M 876 2457 C 934 2457, 934 2457, 992 2457"></path><path class="link" d="M 1124 2457 C 1182 2457, 1182 2457, 1240 2457"></path><path class="link" d="M 628 2201 C 686 2201, 686 2521, 744 2521"></path><path class="link" d="M 876 2521 C 934 2521, 934 2521, 992 2521"></path><path class="link" d="M 1124 2521 C 1182 2521, 1182 2521, 1240 2521"></path><path class="link" d="M 380 2425 C 438 2425, 438 2585, 496 2585"></path><path class="link" d="M 380 2425 C 438 2425, 438 2649, 496 2649"></path><path class="link" d="M 132 1689 C 190 1689, 190 2777, 248 2777"></path><path class="link" d="M 380 2777 C 438 2777, 438 2713, 496 2713"></path><path class="link" d="M 380 2777 C 438 2777, 438 2777, 496 2777"></path><path class="link" d="M 380 2777 C 438 2777, 438 2841, 496 2841"></path><path class="link" d="M 132 1689 C 190 1689, 190 3289, 248 3289"></path><path class="link" d="M 380 3289 C 438 3289, 438 2969, 496 2969"></path><path class="link" d="M 628 2969 C 686 2969, 686 2905, 744 2905"></path><path class="link" d="M 628 2969 C 686 2969, 686 2969, 744 2969"></path><path class="link" d="M 628 2969 C 686 2969, 686 3033, 744 3033"></path><path class="link" d="M 380 3289 C 438 3289, 438 3097, 496 3097"></path><path class="link" d="M 380 3289 C 438 3289, 438 3161, 496 3161"></path><path class="link" d="M 380 3289 C 438 3289, 438 3225, 496 3225"></path><path class="link" d="M 380 3289 C 438 3289, 438 3289, 496 3289"></path><path class="link" d="M 380 3289 C 438 3289, 438 3353, 496 3353"></path><path class="link" d="M 380 3289 C 438 3289, 438 3417, 496 3417"></path><path class="link" d="M 380 3289 C 438 3289, 438 3481, 496 3481"></path><path class="link" d="M 380 3289 C 438 3289, 438 3545, 496 3545"></path><path class="link" d="M 380 3289 C 438 3289, 438 3609, 496 3609"></path></svg>
+      <div id="nodes"><div class="node root has-children" style="left: 0px; top: 1664px;"><div class="label">Meri</div><div class="caret" title="Collapse">–</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node has-children" style="left: 248px; top: 64px;"><div class="label">Physical</div><div class="caret" title="Collapse">–</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 496px; top: 0px;"><div class="label">Tennis</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 496px; top: 64px;"><div class="label">Exercise at home</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 496px; top: 128px;"><div class="label">Swimming</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node has-children" style="left: 248px; top: 224px;"><div class="label">Mental</div><div class="caret" title="Collapse">–</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 496px; top: 192px;"><div class="label">Teraphy</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 496px; top: 256px;"><div class="label">Journaling</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node has-children" style="left: 248px; top: 1048px;"><div class="label">Professional</div><div class="caret" title="Collapse">–</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node has-children" style="left: 496px; top: 416px;"><div class="label">Freelance</div><div class="caret" title="Collapse">–</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 744px; top: 320px;"><div class="label">Upwork profile</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 744px; top: 384px;"><div class="label">Feverr update</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 744px; top: 448px;"><div class="label">Look for more freelance opportunities</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 744px; top: 512px;"><div class="label">AI integrated opportunities</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node has-children" style="left: 496px; top: 608px;"><div class="label">Academic</div><div class="caret" title="Collapse">–</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 744px; top: 576px;"><div class="label">PhD applications</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 744px; top: 640px;"><div class="label">Conferences</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node has-children" style="left: 496px; top: 896px;"><div class="label">Etsy</div><div class="caret" title="Collapse">–</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 744px; top: 704px;"><div class="label">Bookmark design</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 744px; top: 768px;"><div class="label">New poster design</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 744px; top: 832px;"><div class="label">New bundles</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 744px; top: 896px;"><div class="label">Rick and morty batch</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 744px; top: 960px;"><div class="label">The boys batch</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 744px; top: 1024px;"><div class="label">Supernatural batch</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 744px; top: 1088px;"><div class="label">Random 50 batch (from ham)</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node has-children" style="left: 496px; top: 1152px;"><div class="label">Preply</div><div class="caret" title="Collapse">–</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 744px; top: 1152px;"><div class="label">Update profile</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node has-children" style="left: 496px; top: 1376px;"><div class="label">Softwares</div><div class="caret" title="Collapse">–</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node has-children" style="left: 744px; top: 1216px;"><div class="label">Revit</div><div class="caret" title="Collapse">–</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 992px; top: 1216px;"><div class="label">Udemy course</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 744px; top: 1280px;"><div class="label">Rhinoceros</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 744px; top: 1344px;"><div class="label">Autodesk</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 744px; top: 1408px;"><div class="label">Photoshop</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 744px; top: 1472px;"><div class="label">Phyton</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 744px; top: 1536px;"><div class="label">Grasshopper</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node has-children" style="left: 496px; top: 1680px;"><div class="label">Portfolio</div><div class="caret" title="Collapse">–</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 744px; top: 1600px;"><div class="label">Website</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node has-children" style="left: 744px; top: 1664px;"><div class="label">PDF</div><div class="caret" title="Collapse">–</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 992px; top: 1664px;"><div class="label">AGL works</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node has-children" style="left: 744px; top: 1760px;"><div class="label">Linkedin</div><div class="caret" title="Collapse">–</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 992px; top: 1728px;"><div class="label">Yarışma gönderisi</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 992px; top: 1792px;"><div class="label">Profile Update</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node has-children" style="left: 248px; top: 2400px;"><div class="label">Cultural</div><div class="caret" title="Collapse">–</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node has-children" style="left: 496px; top: 2176px;"><div class="label">Languages</div><div class="caret" title="Collapse">–</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node has-children" style="left: 744px; top: 1856px;"><div class="label">English</div><div class="caret" title="Collapse">–</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 992px; top: 1856px;"><div class="label">C1</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node has-children" style="left: 744px; top: 2112px;"><div class="label">Italian</div><div class="caret" title="Collapse">–</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 992px; top: 1920px;"><div class="label">Textbook</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 992px; top: 1984px;"><div class="label">Manga</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 992px; top: 2048px;"><div class="label">Books</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 992px; top: 2112px;"><div class="label">Songs</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 992px; top: 2176px;"><div class="label">A2</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 992px; top: 2240px;"><div class="label">Preply</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 992px; top: 2304px;"><div class="label">Duolingo</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node has-children" style="left: 744px; top: 2368px;"><div class="label">German</div><div class="caret" title="Collapse">–</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node has-children" style="left: 992px; top: 2368px;"><div class="label">A1</div><div class="caret" title="Collapse">–</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 1240px; top: 2368px;"><div class="label">Duolingo</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node has-children" style="left: 744px; top: 2432px;"><div class="label">Turkish</div><div class="caret" title="Collapse">–</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node has-children" style="left: 992px; top: 2432px;"><div class="label">Mothertongue</div><div class="caret" title="Collapse">–</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 1240px; top: 2432px;"><div class="label">Bulmaca</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node has-children" style="left: 744px; top: 2496px;"><div class="label">French</div><div class="caret" title="Collapse">–</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node has-children" style="left: 992px; top: 2496px;"><div class="label">A1</div><div class="caret" title="Collapse">–</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 1240px; top: 2496px;"><div class="label">Duolingo</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 496px; top: 2560px;"><div class="label">Reading</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 496px; top: 2624px;"><div class="label">Architectural consumption</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node has-children" style="left: 248px; top: 2752px;"><div class="label">Hobbies</div><div class="caret" title="Collapse">–</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 496px; top: 2688px;"><div class="label">Board games</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 496px; top: 2752px;"><div class="label">Writing a book</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 496px; top: 2816px;"><div class="label">Reading</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node has-children" style="left: 248px; top: 3264px;"><div class="label">Errands</div><div class="caret" title="Collapse">–</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node has-children" style="left: 496px; top: 2944px;"><div class="label">Subito account</div><div class="caret" title="Collapse">–</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 744px; top: 2880px;"><div class="label">Sell printer</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 744px; top: 2944px;"><div class="label">Sell some clothes</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 744px; top: 3008px;"><div class="label">Sell the shoes</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 496px; top: 3072px;"><div class="label">Repair some clothes</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 496px; top: 3136px;"><div class="label">Start packing</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 496px; top: 3200px;"><div class="label">Accountant stuff</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 496px; top: 3264px;"><div class="label">Doctor stuff</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 496px; top: 3328px;"><div class="label">Buy new iron pills</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 496px; top: 3392px;"><div class="label">Built a tansiyon app</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 496px; top: 3456px;"><div class="label">Built a migren tracker app</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 496px; top: 3520px;"><div class="label">Build a fun exercise app</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div><div class="node" style="left: 496px; top: 3584px;"><div class="label">Send mail to lepidi</div><button class="add" title="Add sub-branch" aria-label="Add sub-branch">+</button></div></div>
     </div>
   </div>
 
@@ -267,7 +281,7 @@
     </div>
     <div class="panel-foot">
       <button class="btn" id="addChild">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
         Sub-branch
       </button>
       <button class="btn ghost-danger" id="delBranch">Delete branch</button>
@@ -280,7 +294,18 @@
 
   // ---------- storage (safe: works in-memory if localStorage is blocked) ----------
   var KEY = "branches.tree.v1";
-  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state.tree)); }catch(e){} }
+  var _savedTimer=null, _storageOK=true;
+  function flashSaved(ok){
+    var el=document.getElementById("saved"); if(!el)return;
+    el.textContent = ok ? "Saved" : "Not saved here \u2014 export a backup";
+    el.style.color = ok ? "" : "var(--danger)";
+    el.style.background = ok ? "" : "#fdf2f0";
+    el.classList.add("show");
+    if(_savedTimer)clearTimeout(_savedTimer);
+    _savedTimer=setTimeout(function(){ if(ok) el.classList.remove("show"); }, ok?1400:6000);
+  }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state.tree)); _storageOK=true; flashSaved(true); }
+    catch(e){ _storageOK=false; flashSaved(false); } }
   function load(){ try{ var r=localStorage.getItem(KEY); return r?JSON.parse(r):null; }catch(e){ return null; } }
   function uid(){ return (Date.now().toString(36)+Math.random().toString(36).slice(2,7)); }
 
@@ -629,6 +654,46 @@
     addChild(state.tree);
   });
 
+  // ---------- export / import (backups) ----------
+  function exportTree(){
+    var data=JSON.stringify(state.tree,null,2);
+    var blob=new Blob([data],{type:"application/json"});
+    var url=URL.createObjectURL(blob);
+    var d=new Date();
+    var stamp=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+    var a=document.createElement("a");
+    a.href=url; a.download="branches-backup-"+stamp+".json";
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
+  }
+  function validTree(o){ return o && typeof o==="object" && typeof o.name==="string" && Array.isArray(o.children); }
+  function normalize(node){
+    if(!node.id) node.id=uid();
+    if(!Array.isArray(node.todos)) node.todos=[];
+    if(typeof node.collapsed!=="boolean") node.collapsed=false;
+    if(!Array.isArray(node.children)) node.children=[];
+    node.children.forEach(normalize);
+    return node;
+  }
+  function importTree(file){
+    var reader=new FileReader();
+    reader.onload=function(){
+      var parsed;
+      try{ parsed=JSON.parse(reader.result); }catch(e){ flashSaved(false); document.getElementById("saved").textContent="Couldn\u2019t read that file"; return; }
+      if(!validTree(parsed)){ document.getElementById("saved").textContent="That file isn\u2019t a Branches backup"; document.getElementById("saved").classList.add("show"); return; }
+      state.tree=normalize(parsed);
+      state.selected=null;
+      document.getElementById("panel").classList.remove("open");
+      save(); render(); setTimeout(fit,20);
+    };
+    reader.readAsText(file);
+  }
+  document.getElementById("exportBtn").addEventListener("click",exportTree);
+  document.getElementById("importBtn").addEventListener("click",function(){ document.getElementById("importFile").click(); });
+  document.getElementById("importFile").addEventListener("change",function(e){
+    var f=e.target.files&&e.target.files[0]; if(f)importTree(f); e.target.value="";
+  });
+
   function escapeHtml(s){ return s.replace(/[&<>"]/g,function(m){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m];}); }
 
   // ---------- pan & zoom ----------
@@ -725,5 +790,6 @@
 
 })();
 </script>
-</body>
-</html>
+
+
+</body></html>
