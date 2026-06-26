@@ -278,6 +278,18 @@ function leafBranches(){
   return out;
 }
 function bById(id){var l=leafBranches();for(var i=0;i<l.length;i++)if(l[i].id===id)return l[i];return null;}
+/* If Branches has never been opened on this origin yet, seed the same default tree
+   so the B deck is never empty. branches.html will load this exact tree later. */
+function ensureBranches(){if(readBranches())return;
+  function nid(){return 'n'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+  var t={id:nid(),name:'Meri',collapsed:false,todos:[],children:[
+    {id:nid(),name:'Physical',collapsed:false,todos:[],children:[]},
+    {id:nid(),name:'Mental',collapsed:false,todos:[],children:[]},
+    {id:nid(),name:'Professional',collapsed:false,todos:[],children:[
+      {id:nid(),name:'Freelance',collapsed:false,todos:[],children:[]},
+      {id:nid(),name:'Academic',collapsed:false,todos:[],children:[]}]},
+    {id:nid(),name:'Cultural',collapsed:false,todos:[],children:[]}]};
+  try{localStorage.setItem(BRANCH_KEY,JSON.stringify(t));}catch(e){}}
 function isB(id){return typeof id==='string'&&id.indexOf('b-')===0;}
 /* unified card object for either an A task or a B branch */
 function cardData(id){
@@ -521,10 +533,10 @@ function reminderCTA(){var u=store.get('match:claudeurl')||'https://claude.ai';t
   setRem(curRem,REMINDERS[curRem].next());hideModal();setTimeout(checkReminders,400);}
 function reminderSnooze(){setRem(curRem,Date.now()+24*60*60*1000);hideModal();setTimeout(checkReminders,400);}
 
-(function init(){loadState();
+(function init(){loadState();ensureBranches();
   var td=store.get('match:todoist');if(td){try{todoistTasks=JSON.parse(td);}catch(e){}}
   var a=store.get('match:active');if(a)active=a;
-  buildDecks();if(active===null)drawNext();renderCard();
+  buildDecks();if(active!==null)nextSrc=isB(active)?'A':'B';if(active===null)drawNext();renderCard();
   initReminders();checkReminders();
   loadTasksCSV().then(function(changed){if(changed){buildDecks();if(active===null){current=null;drawNext();}if(!active&&document.getElementById('deckScreen').hidden===false)renderCard();}});
   maybeSync();setInterval(maybeSync,30*60*1000);
