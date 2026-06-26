@@ -88,6 +88,12 @@
   .mtitle{font-size:19px;font-weight:700;margin-bottom:10px;}
   .mbody{font-size:13.5px;color:var(--ink-soft);line-height:1.5;margin-bottom:18px;}
   .sheet .big{width:100%;margin-bottom:9px;}.sheet .ghost{width:100%;}
+  .btodos{width:100%;max-width:340px;margin-top:18px;text-align:left;max-height:30vh;overflow:auto;}
+  .blabel{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;margin-bottom:8px;}
+  .brow{display:flex;align-items:flex-start;gap:9px;padding:7px 4px;font-size:14px;cursor:pointer;}
+  .brow input{margin-top:2px;width:17px;height:17px;accent-color:var(--accent);flex:none;}
+  .brow.done span{color:var(--ink-soft);text-decoration:line-through;}
+  .bnote{font-size:12.5px;color:var(--ink-soft);line-height:1.5;}
   @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
 </style>
 </head>
@@ -135,6 +141,7 @@
           <button class="chip" id="tstop" onclick="stopTimer()" style="display:none">stop</button>
         </div>
       </div>
+      <div class="btodos" id="btodos" hidden></div>
     </div>
     <div class="fbtns">
       <button class="big" onclick="completeTask()">I did it &#10003;</button>
@@ -194,6 +201,7 @@ var CATS=[
   {id:"wellbeing",name:"Wellbeing",e:"\uD83C\uDF3F"},
   {id:"creative",name:"Creative",e:"\uD83C\uDFA8"},
   {id:"life",name:"Life & Admin",e:"\uD83C\uDFE0"},
+  {id:"growth",name:"Growth",e:"\uD83C\uDF3F"},
   {id:"todoist",name:"Todoist",e:"\u2705"}
 ];
 var CATMAP={}; CATS.forEach(function(c){CATMAP[c.id]=c;});
@@ -230,7 +238,7 @@ var mem={};
 var store={get:function(k){try{return localStorage.getItem(k);}catch(e){return (k in mem)?mem[k]:null;}},
   set:function(k,v){try{localStorage.setItem(k,v);}catch(e){mem[k]=v;}},
   del:function(k){try{localStorage.removeItem(k);}catch(e){delete mem[k];}}};
-var overrides={},xp={},todoistTasks=[],queue=[],active=null,timer=null,timerLeft=0,curRem=null;
+var overrides={},xp={},todoistTasks=[],deckA=[],deckB=[],nextSrc='A',current=null,active=null,timer=null,timerLeft=0,curRem=null;
 
 function loadState(){var o=store.get('match:overrides');overrides=o?JSON.parse(o):{oneTime:{},done:{}};
   if(!overrides.oneTime)overrides.oneTime={};if(!overrides.done)overrides.done={};
@@ -255,8 +263,51 @@ function pool(){
   return local.concat(td);
 }
 function byId(id){var p=pool();for(var i=0;i<p.length;i++)if(p[i].id===id)return p[i];return null;}
-function buildQueue(){var p=pool();var arr=p.map(function(x){return {id:x.id,k:Math.random()-(x.soon?0.6:0)};});
-  arr.sort(function(a,b){return a.k-b.k;});queue=arr.map(function(o){return o.id;});}
+/* ---- Branches (B source): read the tree this app shares with branches.html ---- */
+var BRANCH_KEY='branches.tree.v1';
+function readBranches(){try{var r=localStorage.getItem(BRANCH_KEY);return r?JSON.parse(r):null;}catch(e){return null;}}
+function leafBranches(){
+  var root=readBranches(),out=[];
+  if(!root)return out;
+  (function walk(node,trail){
+    var here=trail.concat(node.name||'');
+    var kids=node.children||[];
+    if(kids.length===0){ if(here.length>1)out.push({id:'b-'+node.id,bid:node.id,name:node.name,path:here,todos:node.todos||[]}); }
+    else for(var i=0;i<kids.length;i++)walk(kids[i],here);
+  })(root,[]);
+  return out;
+}
+function bById(id){var l=leafBranches();for(var i=0;i<l.length;i++)if(l[i].id===id)return l[i];return null;}
+function isB(id){return typeof id==='string'&&id.indexOf('b-')===0;}
+/* unified card object for either an A task or a B branch */
+function cardData(id){
+  if(isB(id)){var b=bById(id);if(!b)return null;
+    var open=b.todos.filter(function(t){return !t.done;});
+    var parent=b.path.slice(0,-1).join(' \u203A ');
+    return {kind:'branch',id:b.id,bid:b.bid,e:'\uD83C\uDF3F',t:b.name,
+      tag:'\uD83C\uDF3F '+(parent||'life area'),path:b.path,todos:b.todos,
+      openCount:open.length,total:b.todos.length};}
+  var p=byId(id);if(!p)return null;p.kind='task';return p;
+}
+
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function shuffledA(){var p=pool();var arr=p.map(function(x){return {id:x.id,k:Math.random()-(x.soon?0.6:0)};});
+  arr.sort(function(a,b){return a.k-b.k;});return arr.map(function(o){return o.id;});}
+function shuffledB(){return shuffle(leafBranches().map(function(b){return b.id;}));}
+function buildDecks(){deckA=shuffledA();deckB=shuffledB();nextSrc='A';}
+function anyCards(){return deckA.length||deckB.length||pool().length||leafBranches().length;}
+/* draw the next card honouring the A,B,A,B rhythm; refill (reshuffle) an empty deck so B repeats */
+function drawNext(){
+  if(!anyCards()){current=null;return;}
+  var src=nextSrc,tries=0;
+  while(tries<2){
+    if(src==='A'){if(!deckA.length)deckA=shuffledA();if(deckA.length){current=deckA.shift();nextSrc='B';return;}}
+    else{if(!deckB.length)deckB=shuffledB();if(deckB.length){current=deckB.shift();nextSrc='A';return;}}
+    src=(src==='A')?'B':'A';tries++;
+  }
+  current=null;
+}
+function buildQueue(){buildDecks();} /* kept name for the sync/settings callers */
 function tagFor(task){if(task.source==='todoist')return task.project?('\uD83D\uDCC1 '+task.project):'\u2705 Todoist';
   var c=CATMAP[task.cat];return c?(c.e+' '+c.name):'';}
 function repeatChip(task){
@@ -273,27 +324,31 @@ function openLevels(){renderLevels();show('levelsScreen');}
 
 function renderCard(){
   if(active){renderFocus();show('focusScreen');return;}
-  var ids={};pool().forEach(function(x){ids[x.id]=1;});
-  queue=queue.filter(function(id){return ids[id];});
-  if(!queue.length){show('emptyScreen');return;}
-  var task=byId(queue[0]);if(!task){queue.shift();return renderCard();}
-  document.getElementById('ctag').textContent=tagFor(task);
-  document.getElementById('cemoji').textContent=task.e;
-  document.getElementById('ctitle').innerHTML=linkify(task.t);
-  var rc=repeatChip(task),cr=document.getElementById('crepeat');
+  if(current===null)drawNext();
+  if(current===null){show('emptyScreen');return;}
+  var card=cardData(current);
+  if(!card){current=null;drawNext();if(current===null){show('emptyScreen');return;}card=cardData(current);if(!card){show('emptyScreen');return;}}
+  document.getElementById('ctag').textContent=(card.tag!==undefined?card.tag:tagFor(card));
+  document.getElementById('cemoji').textContent=card.e;
+  document.getElementById('ctitle').innerHTML=linkify(card.t);
+  var cr=document.getElementById('crepeat');
+  var rc=(card.kind==='branch')?(card.total?('\u21BB '+card.openCount+'/'+card.total+' to-dos'):'\u21BB life area'):repeatChip(card);
   if(rc){cr.textContent=rc;cr.style.display='inline-block';}else cr.style.display='none';
-  var db=dueBadge(task),cd=document.getElementById('cdue');
+  var db=(card.kind==='branch')?'':dueBadge(card),cd=document.getElementById('cdue');
   if(db){cd.textContent=db;cd.style.display='inline-block';}else cd.style.display='none';
   var c=document.getElementById('card');c.style.transition='none';c.style.transform='';
   document.getElementById('stampMatch').style.opacity=0;document.getElementById('stampLater').style.opacity=0;
   show('deckScreen');
 }
-function doSwipe(dir){var id=queue[0];
-  if(dir>0){active=id;store.set('match:active',id);renderCard();}
-  else{queue.shift();var t=byId(id);if(t&&t.soon)queue.splice(Math.min(4,queue.length),0,id);else queue.push(id);renderCard();}}
+function doSwipe(dir){var id=current;if(id===null)return;
+  if(dir>0){active=id;store.set('match:active',id);current=null;renderCard();}
+  else{ /* later: send back to the bottom of its own deck, keep the rhythm */
+    if(isB(id))deckB.push(id);
+    else{var t=byId(id);if(t&&t.soon)deckA.splice(Math.min(4,deckA.length),0,id);else deckA.push(id);}
+    current=null;drawNext();renderCard();}}
 function animateOut(dir,cb){var c=document.getElementById('card');c.style.transition='transform .32s ease';
   c.style.transform='translateX('+(dir*620)+'px) rotate('+(dir*22)+'deg)';setTimeout(cb,300);}
-function btnSwipe(dir){if(!queue.length||active)return;animateOut(dir,function(){doSwipe(dir);});}
+function btnSwipe(dir){if(current===null||active)return;animateOut(dir,function(){doSwipe(dir);});}
 (function(){var c=document.getElementById('card'),startX=0,dx=0,dragging=false;
   c.addEventListener('pointerdown',function(e){if(active)return;if(e.target.closest('a'))return;
     dragging=true;startX=e.clientX;dx=0;c.style.transition='none';try{c.setPointerCapture(e.pointerId);}catch(_){}});
@@ -308,14 +363,33 @@ function btnSwipe(dir){if(!queue.length||active)return;animateOut(dir,function()
       document.getElementById('stampMatch').style.opacity=0;document.getElementById('stampLater').style.opacity=0;}}
   c.addEventListener('pointerup',end);c.addEventListener('pointercancel',end);})();
 
-function renderFocus(){var task=byId(active);if(!task){active=null;store.del('match:active');return renderCard();}
-  document.getElementById('ftag').textContent=tagFor(task);
-  document.getElementById('femoji').textContent=task.e;
-  document.getElementById('ftitle').innerHTML=linkify(task.t);
-  var fr=document.getElementById('frepeat');
-  if(task.source==='todoist'){fr.textContent=dueBadge(task)||repeatChip(task)||'from Todoist';fr.style.cursor='default';}
-  else{fr.textContent=task.repeatable?('\u21BB '+task.freq+' \u2014 tap for one-time'):'one-time \u2014 tap to repeat';fr.style.cursor='pointer';}
+function renderFocus(){var card=cardData(active);if(!card){active=null;store.del('match:active');return renderCard();}
+  document.getElementById('ftag').textContent=(card.tag!==undefined?card.tag:tagFor(card));
+  document.getElementById('femoji').textContent=card.e;
+  document.getElementById('ftitle').innerHTML=linkify(card.t);
+  var fr=document.getElementById('frepeat'),bt=document.getElementById('btodos');
+  if(card.kind==='branch'){
+    fr.textContent='\uD83C\uDF3F life area \u2014 give it a little time';fr.style.cursor='default';
+    renderBTodos(card);bt.hidden=false;
+  }else{
+    bt.hidden=true;bt.innerHTML='';
+    if(card.source==='todoist'){fr.textContent=dueBadge(card)||repeatChip(card)||'from Todoist';fr.style.cursor='default';}
+    else{fr.textContent=card.repeatable?('\u21BB '+card.freq+' \u2014 tap for one-time'):'one-time \u2014 tap to repeat';fr.style.cursor='pointer';}
+  }
   stopTimer();}
+function renderBTodos(card){var bt=document.getElementById('btodos');
+  if(!card.todos.length){bt.innerHTML='<div class="bnote">No to-dos on this branch yet. Spend a little time here, or add to-dos in Branches.</div>';return;}
+  var html='<div class="blabel">To-dos on this branch</div>';
+  card.todos.forEach(function(t){
+    html+='<label class="brow'+(t.done?' done':'')+'"><input type="checkbox" data-bid="'+esc(card.bid)+'" data-tid="'+esc(t.id)+'"'+(t.done?' checked':'')+'><span>'+esc(t.text)+'</span></label>';});
+  bt.innerHTML=html;
+  bt.querySelectorAll('input[type=checkbox]').forEach(function(cb){
+    cb.addEventListener('change',function(){toggleBTodo(cb.getAttribute('data-bid'),cb.getAttribute('data-tid'),cb.checked);});});}
+function toggleBTodo(bid,tid,done){var root=readBranches();if(!root)return;
+  (function walk(node){if(node.id===bid){(node.todos||[]).forEach(function(t){if(t.id===tid)t.done=done;});return true;}
+    return (node.children||[]).some(walk);})(root);
+  try{localStorage.setItem(BRANCH_KEY,JSON.stringify(root));}catch(e){}
+  var card=cardData(active);if(card&&card.kind==='branch')renderBTodos(card);}
 function toggleRepeat(){var task=byId(active);if(!task||task.source==='todoist')return;
   if(task.repeatable)overrides.oneTime[active]=true;else delete overrides.oneTime[active];saveOverrides();renderFocus();}
 function pickTimer(min){document.querySelectorAll('.chip[data-min]').forEach(function(ch){ch.classList.toggle('on',+ch.dataset.min===min);});
@@ -328,16 +402,17 @@ function stopTimer(){if(timer){clearInterval(timer);timer=null;}var d=document.g
   document.querySelectorAll('.chip[data-min]').forEach(function(ch){ch.classList.remove('on');});}
 function celebrate(){var el=document.getElementById('celebrate');el.style.transition='none';el.style.opacity='1';el.style.transform='scale(.4)';
   requestAnimationFrame(function(){el.style.transition='all .5s ease';el.style.opacity='0';el.style.transform='scale(1.6)';});}
-async function completeTask(){var task=byId(active);if(!task){active=null;return renderCard();}
-  var cat=task.source==='todoist'?'todoist':task.cat;xp[cat]=(xp[cat]||0)+1;saveXP();
-  if(task.source==='todoist'){try{await fetch(TODOIST_API+'/tasks/'+task.tdid+'/close',{method:'POST',headers:auth(store.get('match:token'))});}catch(e){}
-    todoistTasks=todoistTasks.filter(function(x){return x.id!==task.tdid;});store.set('match:todoist',JSON.stringify(todoistTasks));}
-  else if(!task.repeatable){overrides.done[task.id]=true;saveOverrides();}
-  queue=queue.filter(function(id){return id!==active;});
-  if(task.source==='local'&&task.repeatable)queue.push(task.id);
-  active=null;store.del('match:active');stopTimer();celebrate();renderCard();}
+async function completeTask(){var card=cardData(active);if(!card){active=null;current=null;return renderCard();}
+  if(card.kind==='branch'){xp['growth']=(xp['growth']||0)+1;saveXP();
+    active=null;store.del('match:active');stopTimer();celebrate();current=null;drawNext();renderCard();return;}
+  var cat=card.source==='todoist'?'todoist':card.cat;xp[cat]=(xp[cat]||0)+1;saveXP();
+  if(card.source==='todoist'){try{await fetch(TODOIST_API+'/tasks/'+card.tdid+'/close',{method:'POST',headers:auth(store.get('match:token'))});}catch(e){}
+    todoistTasks=todoistTasks.filter(function(x){return x.id!==card.tdid;});store.set('match:todoist',JSON.stringify(todoistTasks));}
+  else if(!card.repeatable){overrides.done[card.id]=true;saveOverrides();}
+  if(card.source==='local'&&card.repeatable)deckA.push(card.id);
+  active=null;store.del('match:active');stopTimer();celebrate();current=null;drawNext();renderCard();}
 function backToDeck(){var id=active;active=null;store.del('match:active');stopTimer();
-  queue=queue.filter(function(q){return q!==id;});queue.unshift(id);renderCard();}
+  current=id;renderCard();}
 
 function renderLevels(){var html='',total=0;
   CATS.forEach(function(c){var n=xp[c.id]||0;total+=n;var lv=Math.floor(n/5)+1;var prog=(n%5)/5*100;
@@ -384,21 +459,24 @@ async function saveSync(){var tk=document.getElementById('token').value.trim();v
   if(!tk){st.className='status err';st.textContent='Paste a token first.';return;}
   store.set('match:token',tk);st.className='status';st.textContent='Syncing\u2026';
   try{var n=await pullTodoist(tk);st.className='status ok';st.textContent='Synced \u2014 '+n+' tasks pulled in.';buildQueue();
-    document.getElementById('deckInfo').textContent=pool().length+' tasks in your deck.';}
+    document.getElementById('deckInfo').textContent=deckInfoText();}
   catch(e){st.className='status err';st.textContent='Couldn\u2019t reach Todoist. Works only in the installed app, not the chat preview. If installed, re-check the token.';}}
 async function silentSync(){var tk=store.get('match:token');if(!tk)return;
   try{await pullTodoist(tk);buildQueue();if(!active&&document.getElementById('deckScreen').hidden===false)renderCard();}catch(e){}}
 function maybeSync(){var last=+(store.get('match:lastsync')||0);if(Date.now()-last>FIVE_H)silentSync();}
 function clearToken(){store.del('match:token');store.del('match:todoist');store.del('match:lastsync');todoistTasks=[];
   document.getElementById('token').value='';var st=document.getElementById('syncStatus');st.className='status';st.textContent='Token removed.';buildQueue();}
-function resetOneTimes(){overrides.done={};saveOverrides();buildQueue();document.getElementById('deckInfo').textContent=pool().length+' tasks in your deck.';}
-function reshuffle(){buildQueue();renderCard();}
+function resetOneTimes(){overrides.done={};saveOverrides();buildDecks();current=null;document.getElementById('deckInfo').textContent=deckInfoText();}
+function deckInfoText(){var b=leafBranches().length;
+  return pool().length+' tasks'+(todoistTasks.length?' ('+todoistTasks.length+' from Todoist)':'')+
+    ' \u00b7 '+b+' branch'+(b===1?'':'es')+' in the deck.';}
+function reshuffle(){buildDecks();current=null;drawNext();renderCard();}
 function saveClaudeUrl(){var u=document.getElementById('claudeurl').value.trim();store.set('match:claudeurl',u);
   var b=document.getElementById('claudeurl');b.style.borderColor='var(--accent)';setTimeout(function(){b.style.borderColor='';},800);}
 function toggleSettings(){if(document.getElementById('settingsScreen').hidden){
     document.getElementById('token').value=store.get('match:token')||'';
     document.getElementById('claudeurl').value=store.get('match:claudeurl')||'';
-    document.getElementById('deckInfo').textContent=pool().length+' tasks in your deck'+(todoistTasks.length?' ('+todoistTasks.length+' from Todoist)':'')+'.';
+    document.getElementById('deckInfo').textContent=deckInfoText();
     document.getElementById('syncStatus').textContent='';show('settingsScreen');}else openDeck();}
 
 /* CSV-driven task list (optional, from repo) */
@@ -446,10 +524,12 @@ function reminderSnooze(){setRem(curRem,Date.now()+24*60*60*1000);hideModal();se
 (function init(){loadState();
   var td=store.get('match:todoist');if(td){try{todoistTasks=JSON.parse(td);}catch(e){}}
   var a=store.get('match:active');if(a)active=a;
-  buildQueue();renderCard();
+  buildDecks();if(active===null)drawNext();renderCard();
   initReminders();checkReminders();
-  loadTasksCSV().then(function(changed){if(changed){buildQueue();if(!active&&document.getElementById('deckScreen').hidden===false)renderCard();}});
+  loadTasksCSV().then(function(changed){if(changed){buildDecks();if(active===null){current=null;drawNext();}if(!active&&document.getElementById('deckScreen').hidden===false)renderCard();}});
   maybeSync();setInterval(maybeSync,30*60*1000);
+  /* if Branches was edited in another tab/page, pick up fresh leaves on return */
+  document.addEventListener('visibilitychange',function(){if(!document.hidden){deckB=shuffledB();}});
 })();
 </script>
 </body>
